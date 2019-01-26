@@ -63,7 +63,7 @@ passport.deserializeUser((id,callback)=>{
   })
 })
 
-/*passport.use(
+passport.use(
   new LocalStrategy((username, password, next) => {
     User.findOne({ username }, (err, user) => {
       if (err) return next(err);
@@ -79,7 +79,7 @@ passport.deserializeUser((id,callback)=>{
       return next(null, user);
     });
   })
-);*/
+);
 
 passport.use(new SlackStrategy({
   clientID: "2432150752.526823839923",
