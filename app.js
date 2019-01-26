@@ -15,7 +15,7 @@ const User         = require('./models/user')
 const flash         = require('connect-flash')
 const LocalStrategy = require('passport-local').Strategy;
 const SlackStrategy = require('passport-slack').Strategy;
-const MongoStore    = require("connect-mongo")(session);
+const MongoStore    = require('connect-mongo"')(session);
 
 mongoose
   .connect(
