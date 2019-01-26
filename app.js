@@ -13,7 +13,7 @@ const bcrypt       = require('bcrypt')
 const passport     = require('passport')
 const User         = require('./models/user')
 const flash         = require('connect-flash')
-const LocalStrategy = require('passport-local').Strategy;
+/*const LocalStrategy = require('passport-local').Strategy;*/
 const SlackStrategy = require('passport-slack').Strategy;
 const MongoStore    = require('connect-mongo')(session);
 
@@ -63,7 +63,7 @@ passport.deserializeUser((id,callback)=>{
   })
 })
 
-passport.use(
+/*passport.use(
   new LocalStrategy((username, password, next) => {
     User.findOne({ username }, (err, user) => {
       if (err) return next(err);
@@ -79,7 +79,7 @@ passport.use(
       return next(null, user);
     });
   })
-);
+);*/
 
 passport.use(new SlackStrategy({
   clientID: "2432150752.526823839923",
