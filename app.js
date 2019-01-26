@@ -14,6 +14,7 @@ const passport     = require('passport')
 const User         = require('./models/user')
 const flash         = require('connect-flash')
 const SlackStrategy = require('passport-slack').Strategy;
+const MongoStore    = require("connect-mongo")(session);
 
 
 
@@ -40,8 +41,10 @@ app.use(cookieParser());
 app.use(session({
   secret: 'jasjdjasjdasjdjasdjadasd',
   resave: true,
-  saveUninitialized: true
-}))
+  saveUninitialized: true,
+  store: new MongoStore({ mongooseConnection: mongoose.connection })
+})
+);
 
 passport.serializeUser((user, callback)=>{
   callback(null, user._id)
@@ -53,6 +56,24 @@ passport.deserializeUser((id,callback)=>{
     callback(null, user)
   })
 })
+
+passport.use(
+  new LocalStrategy((username, password, next) => {
+    User.findOne({ username }, (err, user) => {
+      if (err) return next(err);
+
+      if (!user) {
+        return next(null, false, { message: "Usuario incorrecto" });
+      }
+
+      if (!bcrypt.compareSync(password, user.password)) {
+        return next(null, false, { message: "Contraseña incorrecta" });
+      }
+
+      return next(null, user);
+    });
+  })
+);
 
 passport.use(new SlackStrategy({
   clientID: "2432150752.526823839923",
